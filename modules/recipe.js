@@ -1,34 +1,49 @@
-const { recipe } = require('./models');
+const { Recipe } = require('./models');
 
 exports.getAllRecipe = (request, response) => {
-    recipe.find({}, (error, recipes) => {
-        if (error)
+    Recipe.find({}, (error, recipes) => {
+        if (error) {
             return response.status(400).send({
                 message: 'Error'
             });
-        else 
-            response.send(recipes);
+        } else {
+            return response.send(recipes);
+        }
     });
-};
+}
 
 exports.searchRecipeByID = (request, response) => {
-    recipe.findById(request.params.id, (error, recipes) => {
-        if (error)
+    Recipe.findById(request.params.id, (error, recipes) => {
+        if (error) {
             return response.status(400).send({
                 message: 'ID format error'
             });
-        else
-            response.send(recipes);
+        } else {
+            if (recipes == null) {
+                return response.status(400).send({
+                    message: 'No result'
+                });
+            } else {
+                return response.send(recipes);
+            }
+        }
     });
-};
+}
 
 exports.searchRecipeByName = (request, response) => {
-    recipe.find({ recipeName: new RegExp(request.params.name, "i") }, (error, recipes) => {
-        if (error)
+    Recipe.find({ recipeName: new RegExp(request.params.name, "i") }, (error, recipes) => {
+        if (error) {
             return response.status(400).send({
                 message: 'Error'
             });
-        else 
-            response.send(recipes);
+        } else {
+            if (recipes.length == 0) {
+                return response.status(400).send({
+                    message: 'No result'
+                });
+            } else {
+                return response.send(recipes);
+            }
+        }
     });
-};
+}
