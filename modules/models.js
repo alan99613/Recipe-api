@@ -6,6 +6,13 @@ const RecipeSchema = new mongoose.Schema({
     steps: Array
 });
 
-const Recipe = mongoose.model('Recipe', RecipeSchema);
+const UserSchema = new mongoose.Schema({
+    name: String,
+    username: { type: String, unique: true },
+    password: String
+});
 
-module.exports = { Recipe };
+const Recipe = mongoose.model('Recipe', RecipeSchema);
+const User = mongoose.model('User', UserSchema);
+
+module.exports = { Recipe, User };
