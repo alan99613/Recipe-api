@@ -1,5 +1,5 @@
 require('dotenv').config();
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const MONGO_URL = process.env.MONGODB_URI || 'mongodb://localhost/recipe';
 

@@ -1,4 +1,4 @@
-const mongoose = require('./db')
+const mongoose = require('./db');
 
 const RecipeSchema = new mongoose.Schema({
     recipeName: String,
@@ -9,7 +9,8 @@ const RecipeSchema = new mongoose.Schema({
 const UserSchema = new mongoose.Schema({
     name: String,
     username: { type: String, unique: true },
-    password: String
+    password: String,
+    favourites: [{ type : mongoose.Schema.Types.ObjectId, ref: 'Recipe' }]
 });
 
 const Recipe = mongoose.model('Recipe', RecipeSchema);
