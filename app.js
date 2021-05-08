@@ -2,6 +2,7 @@ const express = require('express');
 const searchRecipe = require('./modules/recipe');
 const user = require('./modules/users');
 const favourite = require('./modules/favourites');
+const comment = require('./modules/comments');
 const app = express();
 const port = process.env.PORT || 8080;
 
@@ -19,6 +20,10 @@ app.get('/api/v1/favourite', user.auth, favourite.getFavourite);
 app.put('/api/v1/favourite/:id', user.auth, favourite.addFavourite);
 app.delete('/api/v1/favourite/:id', user.auth, favourite.deleteFavourites);
 
+app.get('/api/v1/comment/:id', comment.getComment);
+app.put('/api/v1/comment/:id', user.auth, comment.addComment);
+app.delete('/api/v1/comment/:id', user.auth, comment.deleteComment);
+
 app.listen(port, () => {
-    console.log(`App running on port ${port}`)
+    console.log(`App running on port ${port}`);
 });
