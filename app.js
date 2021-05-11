@@ -14,7 +14,8 @@ app.get('/api/v1/recipe/name/:name', searchRecipe.searchRecipeByName);
 
 app.post('/api/v1/register', user.register);
 app.post('/api/v1/login', user.login);
-app.put('/api/v1/user', user.auth, user.changePassword);
+app.put('/api/v1/user/password', user.auth, user.changePassword);
+app.put('/api/v1/user/name', user.auth, user.changeName);
 
 app.get('/api/v1/favourite', user.auth, favourite.getFavourite);
 app.put('/api/v1/favourite/:id', user.auth, favourite.addFavourite);

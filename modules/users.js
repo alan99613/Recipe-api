@@ -56,7 +56,7 @@ exports.login = async (request, response) => {
         id: String(user._id),
     }, SECRET, { expiresIn: '7d' });
 
-    return response.send({ token });
+    return response.send({ id: user._id, token: token });
 }
 
 exports.auth = async (request, response, next) => {
@@ -104,6 +104,37 @@ exports.changePassword = async (request, response) => {
         } else {
             return response.send({
                 message: 'Password changed successfully'
+            });
+        }
+    });
+}
+
+exports.changeName = async (request, response) => {
+    const user = request.user;
+
+    if (request.body.password == null || request.body.newName == null) {
+        return response.status(400).send({
+            message: 'Error'
+        });
+    }
+
+    // Check if the password is correct
+    const isPasswordValid = bcryptjs.compareSync(request.body.password, user.password);
+    if (!isPasswordValid) {
+        return response.status(422).send({
+            message: 'Incorrect password'
+        });
+    }
+
+    // Change the name
+    await User.updateOne({ _id: user._id }, { name: request.body.newName }, (error, result) => {
+        if (error) {
+            return response.status(400).send({
+                message: 'Error'
+            });
+        } else {
+            return response.send({
+                message: 'Name changed successfully'
             });
         }
     });
