@@ -1,15 +1,22 @@
 const { Recipe } = require('./models');
 
-exports.getAllRecipe = (request, response) => {
-    Recipe.find({}, (error, recipes) => {
-        if (error) {
-            return response.status(400).send({
-                message: 'Error'
-            });
-        } else {
-            return response.send(recipes);
-        }
-    });
+exports.getRecipe = (request, response) => {
+    if (request.query.num == null) {
+        return response.status(400).send({
+            message: 'Error'
+        });
+    } else {
+        Recipe.aggregate([{ $sample: { size: parseInt(request.query.num) } }], (error, recipes) => {
+            if (error) {
+                console.log(error);
+                return response.status(400).send({
+                    message: 'Error'
+                });
+            } else {
+                return response.send(recipes);
+            }
+        });
+    }
 }
 
 exports.searchRecipeByID = (request, response) => {

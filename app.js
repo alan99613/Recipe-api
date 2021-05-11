@@ -8,7 +8,7 @@ const port = process.env.PORT || 8080;
 
 app.use(express.json());
 
-app.get('/api/v1/recipe', searchRecipe.getAllRecipe);
+app.get('/api/v1/recipe', searchRecipe.getRecipe);
 app.get('/api/v1/recipe/id/:id', searchRecipe.searchRecipeByID);
 app.get('/api/v1/recipe/name/:name', searchRecipe.searchRecipeByName);
 
