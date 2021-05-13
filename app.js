@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const searchRecipe = require('./modules/recipe');
 const user = require('./modules/users');
 const favourite = require('./modules/favourites');
@@ -7,6 +8,7 @@ const app = express();
 const port = process.env.PORT || 8080;
 
 app.use(express.json());
+app.use(cors());
 
 app.get('/api/v1/recipe', searchRecipe.getRecipe);
 app.get('/api/v1/recipe/id/:id', searchRecipe.searchRecipeByID);
