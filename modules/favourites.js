@@ -3,20 +3,37 @@ const { Recipe, User } = require('./models');
 exports.getFavourite = (request, response) => {
     const user = request.user;
 
-    // Get all favorites from the database
-    User.findOne({ _id: user._id }, (error, result) => {
-        if (error) {
-            return response.status(400).send({
-                message: 'Error'
-            });
-        } else {
-            if (result.favourites == null) { // No favorites
-                return response.send([]);
+    if (request.query.id != null) {
+        //Check if the recipe is in the favourite
+        User.countDocuments({ _id: user._id, favourites: request.query.id }, (error, count) => {
+            if (error) {
+                return response.status(400).send({
+                    message: 'Error'
+                });
             } else {
-                return response.send(result.favourites);
+                if (count == 0) {
+                    return response.send({ isFavourite: false });
+                } else {
+                    return response.send({ isFavourite: true });
+                }
             }
-        }
-    }).populate('favourites');
+        }).populate('favourites');
+    } else {
+        // Get all favorites from the database
+        User.findOne({ _id: user._id }, (error, result) => {
+            if (error) {
+                return response.status(400).send({
+                    message: 'Error'
+                });
+            } else {
+                if (result.favourites == null) { // No favorites
+                    return response.send([]);
+                } else {
+                    return response.send(result.favourites);
+                }
+            }
+        }).populate('favourites');
+    }
 }
 
 exports.addFavourite = (request, response) => {
